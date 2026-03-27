@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000"
+    volumes:
+      - ./models:/app/models
+      - ./data:/app/data
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  ui:
+    image: python:3.10-slim
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://api:8000
+    command: >
+      sh -c "pip install -q streamlit requests matplotlib pillow pandas &&
+             streamlit run ui/app.py --server.port 8501 --server.address 0.0.0.0"
+    depends_on:
+      - api
