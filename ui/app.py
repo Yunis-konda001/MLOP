@@ -188,7 +188,7 @@ elif page == '🔍 Predict':
                         probs = result['all_probabilities']
                         
                         fig, ax = plt.subplots(figsize=(10, 4))
-                        colors = ['#1f77b4' if k == result['predicted_class'] else '#lightgray' for k in probs.keys()]
+                        colors = ['#1f77b4' if k == result['predicted_class'] else '#d3d3d3' for k in probs.keys()]
                         bars = ax.barh(list(probs.keys()), [v * 100 for v in probs.values()], color=colors)
                         ax.set_xlabel('Confidence (%)')
                         ax.set_title('Prediction Confidence for Each Digit')
