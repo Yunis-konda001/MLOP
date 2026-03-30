@@ -34,8 +34,14 @@ if page == 'Model Status':
     st.subheader('Initial Training')
     st.write('If the model has not been trained yet, click below to train it.')
     if st.button('🚀 Train Model'):
-        r = requests.post(f'{API_URL}/train', timeout=10)
-        st.success(r.json().get('message'))
+        try:
+            r = requests.post(f'{API_URL}/train', timeout=10)
+            if r.status_code == 200:
+                st.success(r.json().get('message'))
+            else:
+                st.error(f'Error: {r.status_code} - {r.text}')
+        except Exception as e:
+            st.error(f'Failed to start training: {e}')
 
 # ── 2. Predict ────────────────────────────────────────────────────────────────
 elif page == 'Predict':
@@ -135,15 +141,24 @@ elif page == 'Upload & Retrain':
     if files and st.button('📤 Upload Images'):
         file_tuples = [('files', (f.name, f.getvalue(), 'image/jpeg')) for f in files]
         r = requests.post(f'{API_URL}/upload?cls={cls}', files=file_tuples, timeout=30)
-        if r.status_code == 200:
-            st.success(f"Uploaded {len(r.json()['uploaded'])} images for class '{cls}'")
-        else:
-            st.error(r.text)
+        try:
+            if r.status_code == 200:
+                st.success(f"Uploaded {len(r.json()['uploaded'])} images for class '{cls}'")
+            else:
+                st.error(f'Upload failed: {r.status_code} - {r.text}')
+        except Exception as e:
+            st.error(f'Upload error: {e}')
 
     st.divider()
     st.subheader('Trigger Retraining')
     st.write('Click below to retrain the model using all current training data (including newly uploaded images).')
     if st.button('🔄 Retrain Model'):
-        r = requests.post(f'{API_URL}/retrain', timeout=10)
-        st.info(r.json().get('message'))
-        st.write('Check **Model Status** page to monitor progress.')
+        try:
+            r = requests.post(f'{API_URL}/retrain', timeout=10)
+            if r.status_code == 200:
+                st.info(r.json().get('message'))
+                st.write('Check **Model Status** page to monitor progress.')
+            else:
+                st.error(f'Retrain failed: {r.status_code} - {r.text}')
+        except Exception as e:
+            st.error(f'Retrain error: {e}')
