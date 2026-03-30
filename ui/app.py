@@ -1,10 +1,16 @@
 import streamlit as st
 import requests
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')  # Set backend before importing pyplot
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import os
 import time
+
+# Initialize session state
+if 'initialized' not in st.session_state:
+    st.session_state.initialized = True
 
 API_URL = os.getenv('API_URL', 'http://localhost:8000')
 
