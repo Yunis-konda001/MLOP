@@ -7,7 +7,7 @@ A full end-to-end ML pipeline for classifying handwritten digits (0–9) using a
 ---
 
 ## 📺 Video Demo
-[YouTube Demo Link — add after recording]
+[https://youtu.be/3FdFttlRnMU](https://youtu.be/3FdFttlRnMU)
 
 ## 🌐 Live URL
 https://mlop-kseh.onrender.com
